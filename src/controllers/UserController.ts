@@ -10,7 +10,7 @@ export class UserController {
     this.update = this.update.bind(this);
     this.patch = this.patch.bind(this);
     this.delete = this.delete.bind(this);
-    this.uploadImage = this.uploadImage.bind(this);
+    this.uploadFile = this.uploadFile.bind(this);
   }
 
   all(req: Request, res: Response) {
@@ -83,11 +83,23 @@ export class UserController {
       .then((result) => res.status(200).json(result))
       .catch((err) => res.status(500).send(err));
   }
-  uploadImage(req: Request, res: Response) {
+  uploadFile(req: Request, res: Response) {
     const fileName = req.file.originalname;
     const fileBuffer = req.file.buffer;
     this.storageService
-      .upload('image', fileName, fileBuffer)
+      .upload('media', fileName, fileBuffer)
+      .then((result) => {
+        return res.status(200).json(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(400).send('Upload failed');
+      });
+  }
+  deleteFile(req: Request, res: Response) {
+    const { fileName } = req.body;
+    this.storageService
+      .delete('media', fileName)
       .then((result) => {
         return res.status(200).json(result);
       })

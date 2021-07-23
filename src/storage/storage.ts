@@ -1,4 +1,4 @@
-import { Bucket } from '@google-cloud/storage';
+import { Bucket, MakeFilePrivateOptions } from '@google-cloud/storage';
 import { StringMap } from 'services/mongo/mongo';
 
 export interface StorageConfig {
@@ -105,19 +105,19 @@ export class GoogleStorageService implements StorageService {
     }
     return new Promise<string>((resolve, reject) => {
       const object = this.bucket.file(key);
-      object.save(data, { metadata }, er1 => {
+      object.save(data, { metadata }, (er1) => {
         if (er1) {
           return reject(er1);
         }
         if (this.config.public) {
-          object.makePublic(er2 => {
+          object.makePublic((er2) => {
             if (er2) {
               return reject(er2);
             }
             resolve(getPublicUrl(this.bucket.name, key));
           });
         } else {
-          object.makePrivate(er2 => {
+          object.makePrivate((er2) => {
             if (er2) {
               return reject(er2);
             }
@@ -134,7 +134,7 @@ export class GoogleStorageService implements StorageService {
     }
     const object = this.bucket.file(key);
     return new Promise<boolean>((resolve, reject) => {
-      object.delete(err => {
+      object.delete((err) => {
         if (err) {
           return reject(err);
         }

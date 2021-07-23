@@ -11,5 +11,5 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.put('/users/:id', user.update);
   app.patch('/users/:id', user.patch);
   app.delete('/users/:id', user.delete);
-  app.post('/users/image', upload.single('image'), user.uploadImage);
+  app.post('/uploads', upload.single('file'), user.uploadFile);
 }
