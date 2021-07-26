@@ -1,11 +1,11 @@
 import { Storage } from '@google-cloud/storage';
+import { GoogleStorageService, map, StorageConfig } from 'google-storage';
 import { Db } from 'mongodb';
-import { GoogleStorageService, StorageConfig } from './storage/storage';
 import { ApplicationContext } from './context';
 import { UserController } from './controllers/UserController';
 import { MongoUserService } from './services/mongo/MongoUserService';
 
-const cre = {
+const credentials = {
   type: 'service_account',
   project_id: 'go-firestore-rest-api',
   private_key_id: '0227f21f734620a0a04a3882249f3b1cb1ab634a',
@@ -20,14 +20,12 @@ const cre = {
 };
 
 export function createContext(db: Db): ApplicationContext {
-  const storageConfig: StorageConfig = {
-    bucket: 'go-firestore-rest-api.appspot.com',
-  };
-  const storage = new Storage({ credentials: cre });
+  const storageConfig: StorageConfig = { bucket: 'go-firestore-rest-api.appspot.com' };
+  const storage = new Storage({ credentials });
   const bucket = storage.bucket('go-firestore-rest-api.appspot.com');
-  const storageService = new GoogleStorageService(bucket, storageConfig);
+  const storageService = new GoogleStorageService(bucket, storageConfig, map);
   const userService = new MongoUserService(db);
-  const userController = new UserController(userService, storageService);
+  const userController = new UserController(userService, storageService, 'media');
   const ctx: ApplicationContext = { userController };
   return ctx;
 }

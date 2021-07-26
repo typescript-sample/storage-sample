@@ -1,9 +1,9 @@
 import { Application } from 'express';
-import { ApplicationContext } from './context';
 import multer from 'multer';
+import { ApplicationContext } from './context';
 
 export function route(app: Application, ctx: ApplicationContext): void {
-  let upload = multer();
+  const upload = multer();
   const user = ctx.userController;
   app.get('/users', user.all);
   app.get('/users/:id', user.load);

@@ -1,4 +1,4 @@
-import { DeleteObjectCommand, PutObjectCommand, S3Client} from '@aws-sdk/client-s3';
+import {DeleteObjectCommand, PutObjectCommand, S3Client} from '@aws-sdk/client-s3';
 
 export interface AWSConfig {
   region: string;
@@ -8,11 +8,7 @@ export interface AWSConfig {
 export interface StorageConfig {
   bucket?: string; // bucket name
   public?: boolean;
-  /*
-  allUsersAreReader?: boolean;
-  allAuthenticatedUsersReader?: boolean;
-  allAuthenticatedUsersWriter?: boolean;
-  */
+  private?: boolean;
 }
 
 export interface StorageService {
