@@ -4,6 +4,7 @@ import { StringMap } from 'services/mongo/mongo';
 export interface StorageConfig {
   bucket?: string; // bucket name
   public?: boolean;
+  private?: boolean;
   /*
   allUsersAreReader?: boolean;
   allAuthenticatedUsersReader?: boolean;
@@ -116,13 +117,24 @@ export class GoogleStorageService implements StorageService {
             }
             resolve(getPublicUrl(this.bucket.name, key));
           });
-        } else {
-          object.makePrivate((er2) => {
-            if (er2) {
-              return reject(er2);
+          // } else {
+          //   object.makePrivate((er2) => {
+          //     if (er2) {
+          //       return reject(er2);
+          //     }
+          //     resolve(getPublicUrl(this.bucket.name, key));
+          //   });
+        } else if (!this.config.private) {
+          object.acl.add(
+            {
+              entity: 'allAuthenticatedUsers',
+              role: 'READER',
+            },
+            (err, acl, resp) => {
+              if (err) return reject(err);
+              return resolve(getPublicUrl(this.bucket.name, key));
             }
-            resolve(getPublicUrl(this.bucket.name, key));
-          });
+          );
         }
       });
     });

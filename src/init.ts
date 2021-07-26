@@ -22,7 +22,6 @@ const cre = {
 export function createContext(db: Db): ApplicationContext {
   const storageConfig: StorageConfig = {
     bucket: 'go-firestore-rest-api.appspot.com',
-    public: true,
   };
   const storage = new Storage({ credentials: cre });
   const bucket = storage.bucket('go-firestore-rest-api.appspot.com');
