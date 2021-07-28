@@ -1,6 +1,6 @@
 import { json, urlencoded } from 'body-parser';
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import http from 'http';
 import { createContext } from './init';
 import { route } from './route';
@@ -13,7 +13,13 @@ const app = express();
 const port = process.env.PORT;
 const mongoURI = process.env.MONGO_URI;
 const mongoDB = process.env.MONGO_DB;
-
+app.use((req: Request, res: Response, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+  next();
+});
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(express.static('public'));

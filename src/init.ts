@@ -20,7 +20,7 @@ const credentials = {
 };
 
 export function createContext(db: Db): ApplicationContext {
-  const storageConfig: StorageConfig = { bucket: 'go-firestore-rest-api.appspot.com' };
+  const storageConfig: StorageConfig = { bucket: 'go-firestore-rest-api.appspot.com', public: true };
   const storage = new Storage({ credentials });
   const bucket = storage.bucket('go-firestore-rest-api.appspot.com');
   const storageService = new GoogleStorageService(bucket, storageConfig, map);

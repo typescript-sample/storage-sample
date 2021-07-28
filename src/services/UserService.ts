@@ -1,4 +1,4 @@
-import {User} from '../models/User';
+import { User, UserAvatar } from '../models/User';
 
 export interface UserService {
   all(): Promise<User[]>;
@@ -7,4 +7,6 @@ export interface UserService {
   update(user: User): Promise<number>;
   patch(user: User): Promise<number>;
   delete(id: string): Promise<number>;
+  insertAvt(avtUser: UserAvatar): Promise<number>;
+  getAvt(id: string): Promise<string>;
 }
